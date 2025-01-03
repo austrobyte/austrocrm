@@ -1,12 +1,12 @@
 {
-    "name": "smdm22/saas-crm",
-    "description": "This is my package saas-crm",
+    "name": "alpynelectronics/austro-crm-integration",
+    "description": "This package is for integrating with AustroCRM",
     "keywords": [
-        "smdm",
+        "austro-crm-integration",
         "laravel",
-        "saas-crm"
+        "austroByte"
     ],
-    "homepage": "https://github.com/smdm22/saas-crm",
+    "homepage": "https://bitbucket.org/alpynelectronics/austro_crm_integration",
     "license": "MIT",
     "authors": [
         {
