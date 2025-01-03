@@ -15,24 +15,16 @@ class SaasProductController
             return null;
         }
 
-        $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
-            'headers' => [
-                'Authorization' => 'Bearer '.$token['access_token'],
-                'X-User-Unique-Token' => $token['unified_token'],
-            ],
-        ]);
+        $client = SaasTokenCheck::getClient($token);
 
         try {
-
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/product/search', [
-                'json' => ['query' => $phrase],
+            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/product/typeahead-search', [
+                'json' => ['search_phrase' => $phrase],
             ]);
 
             return json_decode($response->getBody(), true);
         } catch (\Exception $e) {
-            // Handle the exception or log it
-            return null; // or return a meaningful error message
+            return null;
         }
     }
 
