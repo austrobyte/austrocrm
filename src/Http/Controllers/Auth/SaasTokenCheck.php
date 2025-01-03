@@ -83,4 +83,19 @@ class SaasTokenCheck
             return response()->json(['message' => 'Login failed'], 401);
         }
     }
+
+    public static function getClient($token)
+    {
+        return new Client([
+            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'headers' => [
+                'Authorization' => 'Bearer '.$token['access_token'],
+                'X-User-Unique-Token' => $token['unified_token'],
+                'X-Organization-Access-Token' => 33,
+                'X-Organization-Id' => 1,
+                'X-Organization-Name' => 'SaaS CRM',
+                'X-Organization-Token' => 11
+            ],
+        ]);
+    }
 }
