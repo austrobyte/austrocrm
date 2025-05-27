@@ -1,22 +1,22 @@
 <?php
 
-namespace Smdm\SaasCrm\Http\Controllers\Records;
+namespace Austro\Crm\Http\Controllers\Records;
 
 use GuzzleHttp\Client;
-use Smdm\SaasCrm\Http\Controllers\Auth\SaasTokenCheck;
+use Austro\Crm\Http\Controllers\Auth\AustroCrmTokenCheck;
 
-class SaasStatementController
+class AustroCrmStatementController
 {
     public static function panelStatistics()
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -25,7 +25,7 @@ class SaasStatementController
 
         try {
 
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/kpi/get-statistics', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/kpi/get-statistics', [
                 'json' => [],
             ]);
 
@@ -39,14 +39,14 @@ class SaasStatementController
 
     public static function panelRfqStatisticsMonthly()
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -55,7 +55,7 @@ class SaasStatementController
 
         try {
 
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/kpi/get-rfq-statistics-monthly', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/kpi/get-rfq-statistics-monthly', [
                 'json' => [],
             ]);
 

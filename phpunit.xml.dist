@@ -16,7 +16,7 @@
     backupStaticProperties="false"
 >
     <testsuites>
-        <testsuite name="Smdm Test Suite">
+        <testsuite name="AustroCrm Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>

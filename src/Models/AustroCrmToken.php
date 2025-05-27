@@ -1,12 +1,12 @@
 <?php
 
-namespace Smdm\SaasCrm\Models;
+namespace Austro\Crm\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SaasCrmAccess extends Model
+class AustroCrmToken extends Model
 {
-    protected $table = 'saas_crm_access';
+    protected $table = 'austro_crm_token';
 
     protected $fillable = [
         'client_id',

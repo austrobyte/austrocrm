@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('saas_crm_access', function (Blueprint $table) {
+        Schema::create('austro_crm_token', function (Blueprint $table) {
             $table->id();
             $table->string('client_id')->nullable();
             $table->string('client_secret')->nullable();
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('saas_crm_access');
+        Schema::dropIfExists('austro_crm_token');
     }
 };

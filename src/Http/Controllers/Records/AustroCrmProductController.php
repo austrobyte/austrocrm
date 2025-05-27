@@ -1,24 +1,24 @@
 <?php
 
-namespace Smdm\SaasCrm\Http\Controllers\Records;
+namespace Austro\Crm\Http\Controllers\Records;
 
 use GuzzleHttp\Client;
-use Smdm\SaasCrm\Http\Controllers\Auth\SaasTokenCheck;
+use Austro\Crm\Http\Controllers\Auth\AustroCrmTokenCheck;
 
-class SaasProductController
+class AustroCrmProductController
 {
     public static function search($phrase)
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
-        $client = SaasTokenCheck::getClient($token);
+        $client = AustroCrmTokenCheck::getClient($token);
 
         try {
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/product/typeahead-search', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/product/typeahead-search', [
                 'json' => ['search_phrase' => $phrase],
             ]);
 
@@ -30,14 +30,14 @@ class SaasProductController
 
     public static function getLatestProducts($count)
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -46,7 +46,7 @@ class SaasProductController
 
         try {
 
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/product/get-latest', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/product/get-latest', [
                 'json' => ['count' => $count],
             ]);
 
@@ -59,14 +59,14 @@ class SaasProductController
 
     public static function searchByNameAndManufacturerId($product_name, $manufacture_id)
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -75,7 +75,7 @@ class SaasProductController
 
         try {
 
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/product/search', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/product/search', [
                 'json' => ['query' => $product_name, 'manufacture_id' => $manufacture_id],
             ]);
 
@@ -88,14 +88,14 @@ class SaasProductController
 
     public static function productsSearchById($product_id)
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -104,7 +104,7 @@ class SaasProductController
 
         try {
 
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/product/search', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/product/search', [
                 'json' => ['product_id' => $product_id],
             ]);
 
@@ -118,14 +118,14 @@ class SaasProductController
 
     public static function getProductsByIds($ids)
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -134,7 +134,7 @@ class SaasProductController
 
         try {
 
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/product/get-by-ids', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/product/get-by-ids', [
                 'json' => ['ids' => $ids],
             ]);
 
@@ -148,14 +148,14 @@ class SaasProductController
 
     public static function getProductAvailability($product_id, $days)
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -164,7 +164,7 @@ class SaasProductController
 
         try {
 
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/product/get-availability', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/product/get-availability', [
                 'json' => ['product_id' => $product_id, 'days' => $days],
             ]);
 
@@ -178,14 +178,14 @@ class SaasProductController
 
     public static function getProductExcesses($product_id)
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -194,7 +194,7 @@ class SaasProductController
 
         try {
 
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/product/get-excess', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/product/get-excess', [
                 'json' => ['product_id' => $product_id],
             ]);
 
@@ -208,14 +208,14 @@ class SaasProductController
 
     public static function createSingleProduct($data = [])
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -223,7 +223,7 @@ class SaasProductController
         ]);
 
         try {
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/product', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/product', [
                 'json' => $data,
             ]);
 
@@ -236,14 +236,14 @@ class SaasProductController
 
     public static function getProductLookUp($data = [])
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -251,7 +251,7 @@ class SaasProductController
         ]);
 
         try {
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/product/get-lookup', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/product/get-lookup', [
                 'json' => ['input_data' => $data],
             ]);
 
@@ -264,14 +264,14 @@ class SaasProductController
 
     public static function getProductAvailabilityCondition($product_id, $created_at = null, $fields = null, $conditions = null)
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -279,7 +279,7 @@ class SaasProductController
         ]);
 
         try {
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/product/get-availability-conditions', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/product/get-availability-conditions', [
                 'json' => [
                     'product_id' => $product_id,
                     'created_at' => $created_at,

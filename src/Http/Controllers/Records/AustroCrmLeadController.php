@@ -1,22 +1,22 @@
 <?php
 
-namespace Smdm\SaasCrm\Http\Controllers\Records;
+namespace Austro\Crm\Http\Controllers\Records;
 
 use GuzzleHttp\Client;
-use Smdm\SaasCrm\Http\Controllers\Auth\SaasTokenCheck;
+use Austro\Crm\Http\Controllers\Auth\AustroCrmTokenCheck;
 
-class SaasLeadController
+class AustroCrmLeadController
 {
     public static function getLeadByEmailAddress($email)
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -25,7 +25,7 @@ class SaasLeadController
 
         try {
 
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/lead/get-by-email', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/lead/get-by-email', [
                 'json' => ['email' => $email],
             ]);
 
@@ -37,14 +37,14 @@ class SaasLeadController
 
     public static function create($data = [])
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -52,7 +52,7 @@ class SaasLeadController
         ]);
 
         try {
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/lead', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/lead', [
                 'json' => $data,
             ]);
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Smdm\SaasCrm\Database\Factories;
+namespace Austro\Crm\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 

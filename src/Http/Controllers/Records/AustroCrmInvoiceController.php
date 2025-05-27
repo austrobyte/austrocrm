@@ -1,22 +1,22 @@
 <?php
 
-namespace Smdm\SaasCrm\Http\Controllers\Records;
+namespace Austro\Crm\Http\Controllers\Records;
 
 use GuzzleHttp\Client;
-use Smdm\SaasCrm\Http\Controllers\Auth\SaasTokenCheck;
+use Austro\Crm\Http\Controllers\Auth\AustroCrmTokenCheck;
 
-class SaasSaleOrderController
+class AustroCrmInvoiceController
 {
-    public static function saleOrderSearchById($salesorder_id)
+    public static function invoiceSearchById($invoice_id)
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -25,8 +25,8 @@ class SaasSaleOrderController
 
         try {
 
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/sales_order/get-by-id', [
-                'json' => ['salesorder_id' => $salesorder_id],
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/invoice/get-by-id', [
+                'json' => ['invoice_id' => $invoice_id],
             ]);
 
             return json_decode($response->getBody(), true);
@@ -37,16 +37,16 @@ class SaasSaleOrderController
 
     }
 
-    public static function getSaleOrderPDF($salesorder_id)
+    public static function getInvoicePDF($invoice_id)
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -55,8 +55,8 @@ class SaasSaleOrderController
 
         try {
 
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/sales_order/'.$salesorder_id.'/get-pdf', [
-                'json' => ['salesorder_id' => $salesorder_id],
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/invoice/'.$invoice_id.'/get-pdf', [
+                'json' => ['invoice_id' => $invoice_id],
             ]);
 
             return $response;

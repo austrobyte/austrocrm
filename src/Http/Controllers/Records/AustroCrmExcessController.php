@@ -1,22 +1,22 @@
 <?php
 
-namespace Smdm\SaasCrm\Http\Controllers\Records;
+namespace Austro\Crm\Http\Controllers\Records;
 
 use GuzzleHttp\Client;
-use Smdm\SaasCrm\Http\Controllers\Auth\SaasTokenCheck;
+use Austro\Crm\Http\Controllers\Auth\AustroCrmTokenCheck;
 
-class SaasExcessController
+class AustroCrmExcessController
 {
     public static function search($phrase)
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -25,7 +25,7 @@ class SaasExcessController
 
         try {
 
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/excess/search', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/excess/search', [
                 'json' => ['query' => $phrase],
             ]);
 
@@ -38,14 +38,14 @@ class SaasExcessController
 
     public static function excessSearchById($excess_id)
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -54,7 +54,7 @@ class SaasExcessController
 
         try {
 
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/excess/search', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/excess/search', [
                 'json' => ['excess_id' => $excess_id],
             ]);
 
@@ -68,14 +68,14 @@ class SaasExcessController
 
     public static function getProductsByIds($ids)
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -84,7 +84,7 @@ class SaasExcessController
 
         try {
 
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/product/get-by-ids', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/product/get-by-ids', [
                 'json' => ['ids' => $ids],
             ]);
 
@@ -98,14 +98,14 @@ class SaasExcessController
 
     public static function createSingleProduct($data = [])
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -113,7 +113,7 @@ class SaasExcessController
         ]);
 
         try {
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/product', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/product', [
                 'json' => $data,
             ]);
 
@@ -126,14 +126,14 @@ class SaasExcessController
 
     public static function createSingleExcess($data = [])
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -141,7 +141,7 @@ class SaasExcessController
         ]);
 
         try {
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/excess', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/excess', [
                 'json' => $data,
             ]);
 

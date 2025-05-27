@@ -1,24 +1,23 @@
 {
-    "name": "smdm22/saas-crm",
-    "description": "This is my package saas-crm",
+    "name": "austro/austro-crm",
+    "description": "This is my package austro-crm",
     "keywords": [
-        "smdm",
+        "Austro",
+        "AustroByte",
+        "Austro",
+        "AustroCrm",
         "laravel",
-        "saas-crm"
+        "austro-crm"
     ],
-    "homepage": "https://github.com/smdm22/saas-crm",
+    "homepage": "https://github.com/austro/austro-crm",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Davood Mostavi",
-            "email": "davood020@gmail.com",
-            "role": "Developer"
-        }
-    ],
+    "authors": [],
     "require": {
         "php": "^8.0.2",
         "spatie/laravel-package-tools": "^1.14.0",
-        "illuminate/contracts": "^9.0"
+        "illuminate/contracts": "^9.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "nesbot/carbon": "^2.0"
     },
     "require-dev": {
         "laravel/pint": "^1.0",
@@ -35,19 +34,19 @@
     },
     "autoload": {
         "psr-4": {
-            "Smdm\\SaasCrm\\": "src/",
-            "Smdm\\SaasCrm\\Database\\Factories\\": "database/factories/"
+            "Austro\\Crm\\": "src/",
+            "Austro\\Crm\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Smdm\\SaasCrm\\Tests\\": "tests/",
+            "Austro\\Crm\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
     "scripts": {
         "post-autoload-dump": "@composer run prepare",
-        "clear": "@php vendor/bin/testbench package:purge-saas-crm --ansi",
+        "clear": "@php vendor/bin/testbench package:purge-austro-crm --ansi",
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "build": [
             "@composer run prepare",
@@ -73,10 +72,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Smdm\\SaasCrm\\SaasCrmServiceProvider"
+                "Austro\\Crm\\AustroCrmServiceProvider"
             ],
             "aliases": {
-                "SaasCrm": "Smdm\\SaasCrm\\Facades\\SaasCrm"
+                "AustroCrm": "Austro\\Crm\\Facades\\AustroCrm"
             }
         }
     },

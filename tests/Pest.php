@@ -1,5 +1,5 @@
 <?php
 
-use Smdm\SaasCrm\Tests\TestCase;
+use Austro\Crm\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);

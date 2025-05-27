@@ -1,12 +1,11 @@
 <?php
 
-namespace Smdm\SaasCrm;
+namespace Austro\Crm;
 
-use Smdm\SaasCrm\Commands\SaasCrmCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class SaasCrmServiceProvider extends PackageServiceProvider
+class AustroCrmServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -16,10 +15,10 @@ class SaasCrmServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('saas-crm')
+            ->name('austro-crm')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_saas_crm_access_table')
-            ->hasCommand(SaasCrmCommand::class);
+            ->hasMigration('create_austro_crm_token_table');
+            // ->hasCommand(AustroCrmCommand::class);
     }
 }

@@ -1,22 +1,22 @@
 <?php
 
-namespace Smdm\SaasCrm\Http\Controllers\Records;
+namespace Austro\Crm\Http\Controllers\Records;
 
 use GuzzleHttp\Client;
-use Smdm\SaasCrm\Http\Controllers\Auth\SaasTokenCheck;
+use Austro\Crm\Http\Controllers\Auth\AustroCrmTokenCheck;
 
-class SaasAccountController
+class AustroCrmAccountController
 {
     public static function getCrmAccountById($account_id)
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -25,7 +25,7 @@ class SaasAccountController
 
         try {
 
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/account/get-by-id', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/account/get-by-id', [
                 'json' => ['account_id' => $account_id],
             ]);
 
@@ -37,14 +37,14 @@ class SaasAccountController
 
     public static function getAccountRFQs($account_id, $fields = null, $conditions = null)
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -52,7 +52,7 @@ class SaasAccountController
         ]);
 
         try {
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/account/get-rfq', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/account/get-rfq', [
                 'json' => ['account_id' => $account_id, 'fields' => $fields, 'conditions' => $conditions],
             ]);
 
@@ -66,14 +66,14 @@ class SaasAccountController
 
     public static function getAccountQuotes($account_id, $fields = null, $conditions = null)
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -81,7 +81,7 @@ class SaasAccountController
         ]);
 
         try {
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/account/get-quote', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/account/get-quote', [
                 'json' => ['account_id' => $account_id, 'fields' => $fields, 'conditions' => $conditions],
             ]);
 
@@ -95,14 +95,14 @@ class SaasAccountController
 
     public static function getAccountSaleOrders($account_id, $fields = null, $conditions = null)
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -110,7 +110,7 @@ class SaasAccountController
         ]);
 
         try {
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/account/get-sale-order', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/account/get-sale-order', [
                 'json' => ['account_id' => $account_id, 'fields' => $fields, 'conditions' => $conditions],
             ]);
 
@@ -124,14 +124,14 @@ class SaasAccountController
 
     public static function getAccountInvoices($account_id, $fields = null, $conditions = null)
     {
-        $token = SaasTokenCheck::getToken();
+        $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
             return null;
         }
 
         $client = new Client([
-            'base_uri' => config('saas-crm.saas_crm_api_base_url'),
+            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
             'headers' => [
                 'Authorization' => 'Bearer '.$token['access_token'],
                 'X-User-Unique-Token' => $token['unified_token'],
@@ -139,7 +139,7 @@ class SaasAccountController
         ]);
 
         try {
-            $response = $client->request('POST', rtrim(config('saas-crm.saas_crm_api_version'), '/').'/account/get-invoice', [
+            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/account/get-invoice', [
                 'json' => ['account_id' => $account_id, 'fields' => $fields, 'conditions' => $conditions],
             ]);
 
