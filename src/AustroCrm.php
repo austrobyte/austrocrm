@@ -22,19 +22,24 @@ class AustroCrm
         return AustroCrmProductController::search($phrase);
     }
 
-    public static function getLatestProducts($count)
+    public static function getLatestProducts($limit)
     {
-        return AustroCrmProductController::getLatestProducts($count);
-    }
-
-    public static function productsSearchByNameAndManufacturerId($product_name, $manufacture_id)
-    {
-        return AustroCrmProductController::searchByNameAndManufacturerId($product_name, $manufacture_id);
+        return AustroCrmProductController::getLatestProducts($limit);
     }
 
     public static function productsSearchById($product_id)
     {
         return AustroCrmProductController::productsSearchById($product_id);
+    }
+
+    public static function getLatestProductsByManufacturerId($manufacturerId, $limit = 8)
+    {
+        return AustroCrmProductController::getLatestProductsByManufacturerId($manufacturerId, $limit);
+    }
+
+    public static function productsSearchByNameAndManufacturerId($product_name, $manufacture_id)
+    {
+        return AustroCrmProductController::searchByNameAndManufacturerId($product_name, $manufacture_id);
     }
 
     public static function getProductsByIds($ids)

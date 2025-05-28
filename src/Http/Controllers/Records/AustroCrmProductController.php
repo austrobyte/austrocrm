@@ -4,56 +4,142 @@ namespace Austro\Crm\Http\Controllers\Records;
 
 use GuzzleHttp\Client;
 use Austro\Crm\Http\Controllers\Auth\AustroCrmTokenCheck;
+use Austro\Crm\ServiceResponse;
 
 class AustroCrmProductController
 {
-    public static function search($phrase)
+    public static function search($phrase, $limit = 20)
     {
         $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
-            return null;
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => 401,
+                'error' => 'Unauthorized',
+                'message' => 'You are not authenticated',
+                'data' => []
+            ]))->toArray();
         }
 
         $client = AustroCrmTokenCheck::getClient($token);
 
         try {
-            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/product/typeahead-search', [
-                'json' => ['search_phrase' => $phrase],
+            $response = $client->request('GET', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/external/product/search', [
+                'json' => [
+                    'query' => $phrase,
+                    'limit' => 20
+                ],
             ]);
 
             return json_decode($response->getBody(), true);
         } catch (\Exception $e) {
-            return null;
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => $e->getCode(),
+                'error' => $e->getMessage(),
+                'message' => 'Failed to search products',
+                'data' => []
+            ]))->toArray();
         }
     }
 
-    public static function getLatestProducts($count)
+    public static function productsSearchById($id)
     {
         $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
-            return null;
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => 401,
+                'error' => 'Unauthorized',
+                'message' => 'You are not authenticated',
+                'data' => []
+            ]))->toArray();
         }
 
-        $client = new Client([
-            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
-            'headers' => [
-                'Authorization' => 'Bearer '.$token['access_token'],
-                'X-User-Unique-Token' => $token['unified_token'],
-            ],
-        ]);
+        $client = AustroCrmTokenCheck::getClient($token);
+
+        try {
+            $response = $client->request('GET', rtrim(config('austro-crm.austro_crm_api_version'), '/')."/external/product/$id/view");
+
+            return json_decode($response->getBody(), true);
+        } catch (\Exception $e) {
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => $e->getCode(),
+                'error' => $e->getMessage(),
+                'message' => 'Failed to get the product',
+                'data' => []
+            ]))->toArray();
+        }
+    }
+
+
+    public static function getLatestProducts($limit = 8)
+    {
+        $token = AustroCrmTokenCheck::getToken();
+
+        if (! $token) {
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => 401,
+                'error' => 'Unauthorized',
+                'message' => 'You are not authenticated',
+                'data' => []
+            ]))->toArray();
+        }
+
+        $client = AustroCrmTokenCheck::getClient($token);
 
         try {
 
-            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/product/get-latest', [
-                'json' => ['count' => $count],
+            $response = $client->request('GET', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/external/product/get-latest', [
+                'json' => ['limit' => $limit],
             ]);
 
             return json_decode($response->getBody(), true);
         } catch (\Exception $e) {
-            // Handle the exception or log it
-            return null; // or return a meaningful error message
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => $e->getCode(),
+                'error' => $e->getMessage(),
+                'message' => 'Failed to get the latest products',
+                'data' => []
+            ]))->toArray();
+        }
+    }
+
+    public static function getLatestProductsByManufacturerId($manufacturerId, $limit = 8)
+    {
+        $token = AustroCrmTokenCheck::getToken();
+
+        if (! $token) {
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => 401,
+                'error' => 'Unauthorized',
+                'message' => 'You are not authenticated',
+                'data' => []
+            ]))->toArray();
+        }
+
+        $client = AustroCrmTokenCheck::getClient($token);
+
+        try {
+            $response = $client->request('GET', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/external/product/get-latest-by-manufacturer-id', [
+                'json' => ['limit' => $limit, 'manufacturer_id' => $manufacturerId],
+            ]);
+
+            return json_decode($response->getBody(), true);
+        } catch (\Exception $e) {
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => $e->getCode(),
+                'error' => $e->getMessage(),
+                'message' => 'Failed to get the latest products',
+                'data' => []
+            ]))->toArray();
         }
     }
 
@@ -62,16 +148,16 @@ class AustroCrmProductController
         $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
-            return null;
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => 401,
+                'error' => 'Unauthorized',
+                'message' => 'You are not authenticated',
+                'data' => []
+            ]))->toArray();
         }
 
-        $client = new Client([
-            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
-            'headers' => [
-                'Authorization' => 'Bearer '.$token['access_token'],
-                'X-User-Unique-Token' => $token['unified_token'],
-            ],
-        ]);
+        $client = AustroCrmTokenCheck::getClient($token);
 
         try {
 
@@ -81,39 +167,8 @@ class AustroCrmProductController
 
             return json_decode($response->getBody(), true);
         } catch (\Exception $e) {
-            // Handle the exception or log it
-            return null; // or return a meaningful error message
-        }
-    }
-
-    public static function productsSearchById($product_id)
-    {
-        $token = AustroCrmTokenCheck::getToken();
-
-        if (! $token) {
             return null;
         }
-
-        $client = new Client([
-            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
-            'headers' => [
-                'Authorization' => 'Bearer '.$token['access_token'],
-                'X-User-Unique-Token' => $token['unified_token'],
-            ],
-        ]);
-
-        try {
-
-            $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/product/search', [
-                'json' => ['product_id' => $product_id],
-            ]);
-
-            return json_decode($response->getBody(), true);
-        } catch (\Exception $e) {
-            // Handle the exception or log it
-            return null; // or return a meaningful error message
-        }
-
     }
 
     public static function getProductsByIds($ids)
@@ -121,16 +176,16 @@ class AustroCrmProductController
         $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
-            return null;
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => 401,
+                'error' => 'Unauthorized',
+                'message' => 'You are not authenticated',
+                'data' => []
+            ]))->toArray();
         }
 
-        $client = new Client([
-            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
-            'headers' => [
-                'Authorization' => 'Bearer '.$token['access_token'],
-                'X-User-Unique-Token' => $token['unified_token'],
-            ],
-        ]);
+        $client = AustroCrmTokenCheck::getClient($token);
 
         try {
 
@@ -140,10 +195,14 @@ class AustroCrmProductController
 
             return json_decode($response->getBody(), true);
         } catch (\Exception $e) {
-            // Handle the exception or log it
-            return null; // or return a meaningful error message
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => $e->getCode(),
+                'error' => $e->getMessage(),
+                'message' => 'Failed to get the the the the the the the the products',
+                'data' => []
+            ]))->toArray();
         }
-
     }
 
     public static function getProductAvailability($product_id, $days)
@@ -151,16 +210,16 @@ class AustroCrmProductController
         $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
-            return null;
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => 401,
+                'error' => 'Unauthorized',
+                'message' => 'You are not authenticated',
+                'data' => []
+            ]))->toArray();
         }
 
-        $client = new Client([
-            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
-            'headers' => [
-                'Authorization' => 'Bearer '.$token['access_token'],
-                'X-User-Unique-Token' => $token['unified_token'],
-            ],
-        ]);
+        $client = AustroCrmTokenCheck::getClient($token);
 
         try {
 
@@ -170,8 +229,13 @@ class AustroCrmProductController
 
             return json_decode($response->getBody(), true);
         } catch (\Exception $e) {
-            // Handle the exception or log it
-            return null; // or return a meaningful error message
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => $e->getCode(),
+                'error' => $e->getMessage(),
+                'message' => 'Failed to get the product availabilities',
+                'data' => []
+            ]))->toArray();
         }
 
     }
@@ -181,16 +245,16 @@ class AustroCrmProductController
         $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
-            return null;
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => 401,
+                'error' => 'Unauthorized',
+                'message' => 'You are not authenticated',
+                'data' => []
+            ]))->toArray();
         }
 
-        $client = new Client([
-            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
-            'headers' => [
-                'Authorization' => 'Bearer '.$token['access_token'],
-                'X-User-Unique-Token' => $token['unified_token'],
-            ],
-        ]);
+        $client = AustroCrmTokenCheck::getClient($token);
 
         try {
 
@@ -200,8 +264,13 @@ class AustroCrmProductController
 
             return json_decode($response->getBody(), true);
         } catch (\Exception $e) {
-            // Handle the exception or log it
-            return null; // or return a meaningful error message
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => $e->getCode(),
+                'error' => $e->getMessage(),
+                'message' => 'Failed to get the product excesses',
+                'data' => []
+            ]))->toArray();
         }
 
     }
@@ -211,16 +280,16 @@ class AustroCrmProductController
         $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
-            return null;
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => 401,
+                'error' => 'Unauthorized',
+                'message' => 'You are not authenticated',
+                'data' => []
+            ]))->toArray();
         }
 
-        $client = new Client([
-            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
-            'headers' => [
-                'Authorization' => 'Bearer '.$token['access_token'],
-                'X-User-Unique-Token' => $token['unified_token'],
-            ],
-        ]);
+        $client = AustroCrmTokenCheck::getClient($token);
 
         try {
             $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/product', [
@@ -229,8 +298,13 @@ class AustroCrmProductController
 
             return json_decode($response->getBody(), true);
         } catch (\Exception $e) {
-            // Consider logging the exception or handling it as needed
-            return null;
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => $e->getCode(),
+                'error' => $e->getMessage(),
+                'message' => 'Failed to create the product',
+                'data' => []
+            ]))->toArray();
         }
     }
 
@@ -239,16 +313,16 @@ class AustroCrmProductController
         $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
-            return null;
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => 401,
+                'error' => 'Unauthorized',
+                'message' => 'You are not authenticated',
+                'data' => []
+            ]))->toArray();
         }
 
-        $client = new Client([
-            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
-            'headers' => [
-                'Authorization' => 'Bearer '.$token['access_token'],
-                'X-User-Unique-Token' => $token['unified_token'],
-            ],
-        ]);
+        $client = AustroCrmTokenCheck::getClient($token);
 
         try {
             $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/product/get-lookup', [
@@ -257,8 +331,13 @@ class AustroCrmProductController
 
             return json_decode($response->getBody(), true);
         } catch (\Exception $e) {
-            // Consider logging the exception or handling it as needed
-            return null;
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => $e->getCode(),
+                'error' => $e->getMessage(),
+                'message' => 'Failed to get the products',
+                'data' => []
+            ]))->toArray();
         }
     }
 
@@ -267,16 +346,16 @@ class AustroCrmProductController
         $token = AustroCrmTokenCheck::getToken();
 
         if (! $token) {
-            return null;
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => 401,
+                'error' => 'Unauthorized',
+                'message' => 'You are not authenticated',
+                'data' => []
+            ]))->toArray();
         }
 
-        $client = new Client([
-            'base_uri' => config('austro-crm.austro_crm_api_base_url'),
-            'headers' => [
-                'Authorization' => 'Bearer '.$token['access_token'],
-                'X-User-Unique-Token' => $token['unified_token'],
-            ],
-        ]);
+        $client = AustroCrmTokenCheck::getClient($token);
 
         try {
             $response = $client->request('POST', rtrim(config('austro-crm.austro_crm_api_version'), '/').'/product/get-availability-conditions', [
@@ -290,8 +369,13 @@ class AustroCrmProductController
 
             return json_decode($response->getBody(), true);
         } catch (\Exception $e) {
-            // Consider logging the exception or handling it as needed
-            return null;
+            return (new ServiceResponse([
+                'status' => false,
+                'status_code' => $e->getCode(),
+                'error' => $e->getMessage(),
+                'message' => 'Failed to get the product availabilities',
+                'data' => []
+            ]))->toArray();
         }
     }
 }
