@@ -1,6 +1,6 @@
 {
-    "name": "austro/austro-crm",
-    "description": "This is my package austro-crm",
+    "name": "austrobyte/austrocrm",
+    "description": "This package is a laravel package for AustroCRM integration",
     "keywords": [
         "Austro",
         "AustroByte",
@@ -9,7 +9,7 @@
         "laravel",
         "austro-crm"
     ],
-    "homepage": "https://github.com/austro/austro-crm",
+    "homepage": "https://github.com/austrobyte/austrocrm",
     "license": "MIT",
     "authors": [],
     "require": {
